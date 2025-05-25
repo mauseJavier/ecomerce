@@ -7,7 +7,7 @@ import StatsWidget from '@/components/dashboard/StatsWidget.vue';
 </script>
 
 <template>
-    <div class="grid grid-cols-12 gap-8">
+    <!-- <div class="grid grid-cols-12 gap-8">
         <StatsWidget />
 
         <div class="col-span-12 xl:col-span-6">
@@ -18,5 +18,7 @@ import StatsWidget from '@/components/dashboard/StatsWidget.vue';
             <RevenueStreamWidget />
             <NotificationsWidget />
         </div>
-    </div>
+    </div> -->
+
+    <h1>hola CABEZON </h1>
 </template>

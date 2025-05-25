@@ -1,0 +1,11 @@
+version: '3'
+services:
+  tiendaLLFactura:
+    container_name: tiendaLLFactura
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev -- --host"
