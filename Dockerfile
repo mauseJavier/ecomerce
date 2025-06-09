@@ -8,9 +8,9 @@ WORKDIR /app
 # Copiamos package.json y package-lock.json (o yarn.lock)
 COPY package*.json ./
 
-# Instalamos las dependencias
+# Instalamos las dependencias y pinia
 # Si usas yarn: RUN yarn install --frozen-lockfile
-RUN npm install
+RUN npm install && npm install axios pinia
 
 # Copiamos el resto del código fuente de la aplicación
 COPY . .

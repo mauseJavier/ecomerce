@@ -1,4 +1,5 @@
 <script setup>
+import config from '@/config'; // Importar la configuración
 import { useLayout } from '@/layout/composables/layout';
 import AppConfigurator from './AppConfigurator.vue';
 
@@ -30,7 +31,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                     </g>
                 </svg>
 
-                <span>25 DE MAYO DIA LLUVIOSO</span>
+                <span>{{ config.nombreNegocio }}</span>
             </router-link>
         </div>
 

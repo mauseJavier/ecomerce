@@ -18,6 +18,19 @@ const layoutState = reactive({
     activeMenuItem: null
 });
 
+const DARK_MODE_KEY = 'app_dark_mode';
+
+// Leer preferencia de localStorage al iniciar
+const savedDark = localStorage.getItem(DARK_MODE_KEY);
+if (savedDark !== null) {
+    layoutConfig.darkTheme = savedDark === 'true';
+    if (layoutConfig.darkTheme) {
+        document.documentElement.classList.add('app-dark');
+    } else {
+        document.documentElement.classList.remove('app-dark');
+    }
+}
+
 export function useLayout() {
     const setActiveMenuItem = (item) => {
         layoutState.activeMenuItem = item.value || item;
@@ -36,6 +49,8 @@ export function useLayout() {
     const executeDarkModeToggle = () => {
         layoutConfig.darkTheme = !layoutConfig.darkTheme;
         document.documentElement.classList.toggle('app-dark');
+        // Guardar preferencia en localStorage
+        localStorage.setItem(DARK_MODE_KEY, layoutConfig.darkTheme);
     };
 
     const toggleMenu = () => {

@@ -1,4 +1,14 @@
+import config from '@/config';
+import axios from 'axios';
+
 export const ProductService = {
+    async getProducts() {
+        // Llama a la API real usando el empresa_id de la configuración
+        const response = await axios.get(`https://llfactura.com/api/inventarios/${config.empresa_id}?per_page=10&page=1`);
+        return response.data.data; // Ajusta según la estructura de la respuesta
+    },
+
+    // Métodos antiguos conservados para compatibilidad o pruebas locales
     getProductsData() {
         return [
             {
@@ -1204,10 +1214,6 @@ export const ProductService = {
 
     getProductsSmall() {
         return Promise.resolve(this.getProductsData().slice(0, 10));
-    },
-
-    getProducts() {
-        return Promise.resolve(this.getProductsData());
     },
 
     getProductsWithOrdersSmall() {

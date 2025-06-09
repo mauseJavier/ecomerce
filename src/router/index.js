@@ -10,8 +10,8 @@ const router = createRouter({
             children: [
                 {
                     path: '/',
-                    name: 'dashboard',
-                    component: () => import('@/views/Dashboard.vue')
+                    name: 'Productos',
+                    component: () => import('@/views/uikit/ListDoc.vue')
                 },
                 {
                     path: '/uikit/formlayout',
@@ -103,6 +103,16 @@ const router = createRouter({
                     path: '/documentation',
                     name: 'documentation',
                     component: () => import('@/views/pages/Documentation.vue')
+                },
+                {
+                    path: '/carrito',
+                    name: 'carrito',
+                    component: () => import('@/views/pages/Cart.vue')
+                },
+                {
+                    path: '/checkout',
+                    name: 'checkout',
+                    component: () => import('@/views/pages/Checkout.vue')
                 }
             ]
         },
