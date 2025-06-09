@@ -1,6 +1,6 @@
 // Archivo de configuración central para multiempresa
 export default {
-  empresa_id: 1, // Cambia este valor para cada negocio
+  empresa_id: 12, // Cambia este valor para cada negocio
   nombreNegocio: "Empresa Prueba",
   logo: "/logo.svg",
   colores: {
@@ -8,5 +8,5 @@ export default {
     secundario: "#ff9800"
   },
   moneda: "USD",
-  apiToken: "914vy9QLoKkuKMqwNqxmszPVGQViC1qRpqM1VTM24f985a5e"
+  apiToken: import.meta.env.VITE_API_TOKEN
 }
