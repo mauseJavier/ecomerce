@@ -95,7 +95,7 @@ async function enviarPedido() {
   console.log('JSON del pedido:', JSON.stringify(payload, null, 2))
   try {
     // Cambia la URL por la de tu API real de pedidos
-    const response = await fetch('https://llfprueba.llservicios.ar/api/guardarPresupuesto', {
+    const response = await fetch(`${config.guardarPresupuesto}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

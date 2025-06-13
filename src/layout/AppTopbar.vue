@@ -1,9 +1,16 @@
 <script setup>
 import config from '@/config'; // Importar la configuración
 import { useLayout } from '@/layout/composables/layout';
+import { useCartStore } from '@/store/cart';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import AppConfigurator from './AppConfigurator.vue';
 
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
+const cart = useCartStore();
+const { items } = storeToRefs(cart);
+// Calcular la cantidad total de artículos (no agrupado por tipo)
+const totalArticulos = computed(() => items.value.reduce((sum, i) => sum + i.cantidad, 0));
 </script>
 
 <template>
@@ -12,8 +19,9 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
             <button class="layout-menu-button layout-topbar-action" @click="toggleMenu">
                 <i class="pi pi-bars"></i>
             </button>
-            <router-link to="/" class="layout-topbar-logo">
-                <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <router-link to="/" class="layout-topbar-logo flex items-center gap-2">
+                <img :src="config.logo" alt="Logo" class="h-8 w-auto" />
+                <svg v-if="!config.logo" viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         fill-rule="evenodd"
                         clip-rule="evenodd"
@@ -36,7 +44,25 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
         </div>
 
         <div class="layout-topbar-actions">
-            <div class="layout-config-menu">
+            <div class="flex items-center mr-4">
+                <router-link to="/carrito" class="relative">
+                    <i class="pi pi-shopping-cart text-3xl" style="font-size: 2rem"></i>
+                    <span v-if="totalArticulos > 0" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">{{ totalArticulos }}</span>
+                </router-link>
+            </div>
+
+            
+            <button
+            class="layout-topbar-menu-button layout-topbar-action"
+            v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
+            >
+            <i class="pi pi-ellipsis-v"></i>
+        </button>
+        
+        <div class="layout-topbar-menu hidden lg:block">
+                       
+            
+            <div class="layout-topbar-menu-content">
                 <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
                     <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
                 </button>
@@ -50,17 +76,9 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                     </button>
                     <AppConfigurator />
                 </div>
-            </div>
 
-            <button
-                class="layout-topbar-menu-button layout-topbar-action"
-                v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
-            >
-                <i class="pi pi-ellipsis-v"></i>
-            </button>
+                <div v-if="config.entorno === 'desarrollo'" >
 
-            <div class="layout-topbar-menu hidden lg:block">
-                <div class="layout-topbar-menu-content">
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-calendar"></i>
                         <span>Calendar</span>
@@ -73,8 +91,11 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
                     </button>
+
                 </div>
             </div>
-        </div>
+        </div> <!-- cierre de layout-topbar-actions y layout-topbar -->
     </div>
+        </div>
+
 </template>

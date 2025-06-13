@@ -1,12 +1,16 @@
 <script setup>
+import config from '@/config';
 import { ProductService } from '@/service/ProductService';
 import { useCartStore } from '@/store/cart';
+import Swal from 'sweetalert2';
 import { onMounted, ref } from 'vue';
 
 const products = ref([]);
 const options = ref(['list', 'grid']);
 const layout = ref('list');
 const cart = useCartStore()
+const searchTerm = ref('');
+const loading = ref(false);
 
 onMounted(async () => {
     try {
@@ -16,6 +20,17 @@ onMounted(async () => {
         products.value = [];
     }
 });
+
+async function buscarProductos() {
+  loading.value = true;
+  try {
+    products.value = await ProductService.searchProducts(searchTerm.value);
+  } catch (e) {
+    products.value = [];
+  } finally {
+    loading.value = false;
+  }
+}
 
 function getSeverity(product) {
     switch (product.inventoryStatus) {
@@ -37,13 +52,29 @@ function handleAddToCart(producto) {
   cart.addToCart(producto)
   // Mostrar el JSON del carrito actual en consola
   console.log('Carrito para API:', JSON.stringify(cart.cartForApi, null, 2))
+  Swal.fire({
+    icon: 'success',
+    title: '¡Producto agregado!',
+    text: 'El producto fue añadido al carrito.',
+    timer: 1200,
+    showConfirmButton: false
+  })
 }
 </script>
 
 <template>
     <div class="flex flex-col">
         <div class="card">
-            <div class="font-semibold text-xl">Productos</div>
+            <div class="flex justify-between items-center mb-4">
+                <div class="font-semibold text-xl">Productos</div>
+                <form @submit.prevent="buscarProductos" class="flex gap-2 items-center">
+                    <input v-model="searchTerm" type="text" placeholder="Buscar producto..." class="border-2 border-blue-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition rounded-full px-4 py-2 shadow-sm outline-none text-gray-700 placeholder-gray-400 bg-white" />
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full font-semibold shadow transition disabled:opacity-50" :disabled="loading">
+                        <span v-if="loading">Buscando...</span>
+                        <span v-else>Buscar</span>
+                    </button>
+                </form>
+            </div>
             <DataView :value="products" :layout="layout">
                 <template #header>
                     <div class="flex justify-end">
@@ -61,7 +92,7 @@ function handleAddToCart(producto) {
                                 <div class="md:w-40 relative">
                                     <img
                                         class="block xl:block mx-auto rounded w-full"
-                                        :src="Array.isArray(item.imagen) && item.imagen.length > 0 ? item.imagen[0] : '/demo/images/landing/mockup.svg'"
+                                        :src="Array.isArray(item.imagen) && item.imagen.length > 0 ? item.imagen[0] : config.logo"
                                         :alt="item.detalle"
                                     />
                                 </div>
@@ -92,7 +123,7 @@ function handleAddToCart(producto) {
                                     <div class="relative mx-auto">
                                         <img
                                             class="rounded w-full"
-                                            :src="Array.isArray(item.imagen) && item.imagen.length > 0 ? item.imagen[0] : '/demo/images/landing/mockup.svg'"
+                                            :src="Array.isArray(item.imagen) && item.imagen.length > 0 ? item.imagen[0] : config.logo"
                                             :alt="item.detalle"
                                             style="max-width: 300px"
                                         />

@@ -10,7 +10,7 @@ COPY package*.json ./
 
 # Instalamos las dependencias y pinia
 # Si usas yarn: RUN yarn install --frozen-lockfile
-RUN npm install && npm install axios pinia
+RUN npm install --legacy-peer-deps && npm install axios pinia sweetalert2
 
 # Copiamos el resto del código fuente de la aplicación
 COPY . .
