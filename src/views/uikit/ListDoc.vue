@@ -12,19 +12,39 @@ const cart = useCartStore()
 const searchTerm = ref('');
 const loading = ref(false);
 
-onMounted(async () => {
+// Paginación
+const currentPage = ref(1);
+const lastPage = ref(1);
+
+async function cargarProductos(page = 1) {
+    loading.value = true;
     try {
-        // Usar el ProductService para obtener los productos desde la API
-        products.value = await ProductService.getProducts();
+        // Llamada a la API con paginación
+        const response = await ProductService.getProducts(page);
+        // Si la API retorna { data, current_page, last_page }
+        products.value = response.data || response;
+        currentPage.value = response.current_page || page;
+        lastPage.value = response.pagination.last_page || 1;
     } catch (e) {
         products.value = [];
+        currentPage.value = 1;
+        lastPage.value = 1;
+    } finally {
+        loading.value = false;
     }
+}
+
+onMounted(() => {
+    cargarProductos();
 });
 
 async function buscarProductos() {
   loading.value = true;
   try {
     products.value = await ProductService.searchProducts(searchTerm.value);
+    // Cuando se busca, ocultar paginación
+    currentPage.value = 1;
+    lastPage.value = 1;
   } catch (e) {
     products.value = [];
   } finally {
@@ -36,13 +56,10 @@ function getSeverity(product) {
     switch (product.inventoryStatus) {
         case 'INSTOCK':
             return 'success';
-
         case 'LOWSTOCK':
             return 'warning';
-
         case 'OUTOFSTOCK':
             return 'danger';
-
         default:
             return null;
     }
@@ -59,6 +76,18 @@ function handleAddToCart(producto) {
     timer: 1200,
     showConfirmButton: false
   })
+}
+
+function paginaAnterior() {
+  if (currentPage.value > 1) {
+    cargarProductos(currentPage.value - 1);
+  }
+}
+
+function paginaSiguiente() {
+  if (currentPage.value < lastPage.value) {
+    cargarProductos(currentPage.value + 1);
+  }
 }
 </script>
 
@@ -149,6 +178,12 @@ function handleAddToCart(producto) {
                     </div>
                 </template>
             </DataView>
+            <!-- Controles de paginación -->
+            <div v-if="lastPage > 1" class="flex justify-center items-center gap-4 mt-6">
+                <Button @click="paginaAnterior" :disabled="currentPage === 1" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">Anterior</Button>
+                <span>Página {{ currentPage }} de {{ lastPage }}</span>
+                <Button @click="paginaSiguiente" :disabled="currentPage === lastPage" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">Siguiente</Button>
+            </div>
         </div>
     </div>
 </template>
