@@ -3,7 +3,7 @@ export default {
 
   empresa_id: import.meta.env.VITE_EMPRESA_ID, // Cambia este valor para cada negocio
   nombreNegocio: import.meta.env.VITE_NOMBRE_NEGOCIO || "Mi Negocio",
-  logo: "https://res.cloudinary.com/dsen7wmue/image/upload/v1748752141/1/aaaa/228267_1748752139_aaaa.png",
+  logo: import.meta.env.VITE_LOGO_URL,
   colores: {
     primario: "#1976d2",
     secundario: "#ff9800"

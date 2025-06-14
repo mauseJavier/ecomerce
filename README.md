@@ -28,7 +28,7 @@ Esto levantará el frontend en modo desarrollo en `http://localhost:5173` (puert
 
 1. Construye la imagen Docker:
    ```bash
-   docker build -t sakai-ecommerce .
+   docker build -t tiendaferrseb .
    ```
 
 2. Crea un archivo `.env` en la raíz del proyecto (puedes copiar el ejemplo):
@@ -39,8 +39,10 @@ Esto levantará el frontend en modo desarrollo en `http://localhost:5173` (puert
 
 3. Ejecuta el contenedor:
    ```bash
-   docker run -d --env-file .env -p 80:80 sakai-ecommerce
-   ```
+   
+docker run -d  --name tiendaferrseb  --restart unless-stopped  --network redPrincipal  -p 127.0.0.1:8001:80  tiendaferrseb:latest   
+
+```
 
 Esto levantará la app en el puerto 80 usando Nginx y las variables de entorno de tu archivo `.env`.
 
