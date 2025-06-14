@@ -24,20 +24,25 @@ docker-compose up --build
 
 Esto levantará el frontend en modo desarrollo en `http://localhost:5173` (puerto configurable en `docker-compose.yml`).
 
-## Uso en Producción (Dockerfile)
+## Despliegue en Producción con Dockerfile
 
-Para construir y correr la imagen optimizada para producción:
-
-1. Construye la imagen:
+1. Construye la imagen Docker:
    ```bash
    docker build -t sakai-ecommerce .
    ```
-2. Corre el contenedor:
+
+2. Crea un archivo `.env` en la raíz del proyecto (puedes copiar el ejemplo):
    ```bash
-   docker run -d -p 80:80 sakai-ecommerce
+   cp .env.example .env
+   # Edita .env y coloca tus valores reales
    ```
 
-Esto servirá la aplicación en el puerto 80 usando Nginx.
+3. Ejecuta el contenedor:
+   ```bash
+   docker run -d --env-file .env -p 80:80 sakai-ecommerce
+   ```
+
+Esto levantará la app en el puerto 80 usando Nginx y las variables de entorno de tu archivo `.env`.
 
 ## Características principales
 - Multiempresa: configurable desde `src/config.js`.
