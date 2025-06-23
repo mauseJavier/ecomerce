@@ -18,6 +18,7 @@ export const ProductService = {
         const response = await axios.get(`${config.apiUrl}/inventarios/${config.empresa_id}/buscar`, {
             params: { q: query }
         });
+        console.log('Response from searchProducts:', response.data);
         if (!response.data || !response.data.data) {
             throw new Error('No data found in the response');
         }

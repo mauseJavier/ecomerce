@@ -3,7 +3,7 @@ import config from '@/config';
 import { ProductService } from '@/service/ProductService';
 import { useCartStore } from '@/store/cart';
 import Swal from 'sweetalert2';
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 
 const products = ref([]);
 const options = ref(['list', 'grid']);
@@ -89,6 +89,35 @@ function paginaSiguiente() {
     cargarProductos(currentPage.value + 1);
   }
 }
+
+// Estado reactivo para el índice de imagen de cada producto
+const imageIndexes = reactive({});
+
+function getProductImages(item) {
+    if (item.imagen && typeof item.imagen === 'object') {
+        const urls = Object.values(item.imagen);
+        if (urls.length > 0) return urls;
+    }
+    return [config.logo];
+}
+
+function getCurrentImage(item) {
+    const images = getProductImages(item);
+    if (!imageIndexes[item.id]) imageIndexes[item.id] = 0;
+    return images[imageIndexes[item.id]] || images[0];
+}
+
+function prevImage(item) {
+    const images = getProductImages(item);
+    if (!imageIndexes[item.id]) imageIndexes[item.id] = 0;
+    imageIndexes[item.id] = (imageIndexes[item.id] - 1 + images.length) % images.length;
+}
+
+function nextImage(item) {
+    const images = getProductImages(item);
+    if (!imageIndexes[item.id]) imageIndexes[item.id] = 0;
+    imageIndexes[item.id] = (imageIndexes[item.id] + 1) % images.length;
+}
 </script>
 
 <template>
@@ -118,12 +147,19 @@ function paginaSiguiente() {
                     <div class="flex flex-col">
                         <div v-for="(item, index) in slotProps.items" :key="index">
                             <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4" :class="{ 'border-t border-surface': index !== 0 }">
-                                <div class="md:w-40 relative">
-                                    <img
-                                        class="block xl:block mx-auto rounded w-full"
-                                        :src="Array.isArray(item.imagen) && item.imagen.length > 0 ? item.imagen[0] : config.logo"
-                                        :alt="item.detalle"
-                                    />
+                                <div class="md:w-40 relative flex flex-col items-center gap-2">
+                                    <div class="relative w-full flex items-center justify-center">
+                                        <button v-if="getProductImages(item).length > 1" @click="prevImage(item)" class="absolute left-0 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow"><i class="pi pi-chevron-left"></i></button>
+                                        <img
+                                            class="block mx-auto rounded w-full"
+                                            :src="getCurrentImage(item)"
+                                            :alt="item.detalle"
+                                        />
+                                        <button v-if="getProductImages(item).length > 1" @click="nextImage(item)" class="absolute right-0 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow"><i class="pi pi-chevron-right"></i></button>
+                                    </div>
+                                    <div v-if="getProductImages(item).length > 1" class="flex justify-center gap-1 mt-1">
+                                        <span v-for="(img, idx) in getProductImages(item)" :key="idx" class="w-2 h-2 rounded-full" :class="imageIndexes[item.id] === idx ? 'bg-blue-600' : 'bg-gray-300'"></span>
+                                    </div>
                                 </div>
                                 <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
                                     <div class="flex flex-row md:flex-col justify-between items-start gap-2">
@@ -149,13 +185,20 @@ function paginaSiguiente() {
                         <div v-for="(item, index) in slotProps.items" :key="index" class="col-span-12 sm:col-span-6 lg:col-span-4 p-2">
                             <div class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col">
                                 <div class="bg-surface-50 flex justify-center rounded p-4">
-                                    <div class="relative mx-auto">
-                                        <img
-                                            class="rounded w-full"
-                                            :src="Array.isArray(item.imagen) && item.imagen.length > 0 ? item.imagen[0] : config.logo"
-                                            :alt="item.detalle"
-                                            style="max-width: 300px"
-                                        />
+                                    <div class="relative mx-auto flex flex-col items-center gap-2">
+                                        <div class="relative w-full flex items-center justify-center">
+                                            <button v-if="getProductImages(item).length > 1" @click="prevImage(item)" class="absolute left-0 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow"><i class="pi pi-chevron-left"></i></button>
+                                            <img
+                                                class="rounded w-full"
+                                                :src="getCurrentImage(item)"
+                                                :alt="item.detalle"
+                                                style="max-width: 300px"
+                                            />
+                                            <button v-if="getProductImages(item).length > 1" @click="nextImage(item)" class="absolute right-0 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow"><i class="pi pi-chevron-right"></i></button>
+                                        </div>
+                                        <div v-if="getProductImages(item).length > 1" class="flex justify-center gap-1 mt-1">
+                                            <span v-for="(img, idx) in getProductImages(item)" :key="idx" class="w-2 h-2 rounded-full" :class="imageIndexes[item.id] === idx ? 'bg-blue-600' : 'bg-gray-300'"></span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="pt-6">
