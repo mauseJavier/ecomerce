@@ -28,7 +28,7 @@ Esto levantará el frontend en modo desarrollo en `http://localhost:5173` (puert
 
 1. Construye la imagen Docker:
    ```bash
-   docker build -t tiendaferrseb .
+   docker build -t tiendaimpotecno .
    ```
 
 2. Crea un archivo `.env` en la raíz del proyecto (puedes copiar el ejemplo):
@@ -40,7 +40,7 @@ Esto levantará el frontend en modo desarrollo en `http://localhost:5173` (puert
 3. Ejecuta el contenedor:
    ```bash
    
-docker run -d  --name tiendaferrseb  --restart unless-stopped  --network redPrincipal  -p 127.0.0.1:8001:80  tiendaferrseb:latest   
+docker run -d  --name tiendaimpotecno  --restart unless-stopped  --network redPrincipal  -p 127.0.0.1:8001:80  tiendaimpotecno:latest   
 
 ```
 
@@ -64,3 +64,81 @@ Consulta la [documentación original de Sakai](https://sakai.primevue.org/docume
 ---
 
 ¿Dudas o sugerencias? Abre un issue o contacta al autor.
+
+Actualizar VPS ---------------------------------------------
+
+Cuando tenés un proyecto clonado que usa Docker y querés **actualizar la imagen y el contenedor** después de hacer un `git pull` con nuevos cambios del repositorio, el proceso general es el siguiente:
+
+---
+
+### ✅ **Pasos para actualizar la imagen y el contenedor**
+
+1. ### 🔄 Hacer `git pull` para traer los cambios
+
+   ```bash
+   git pull origin main  
+   
+   # o la rama correspondiente
+   ```
+
+2. ### 🛠️ Reconstruir la imagen de Docker
+
+   Si usás un `Dockerfile`:
+
+   ```bash
+   docker build -t nombre-de-tu-imagen .
+   ```
+
+   Si usás `docker-compose`:
+
+   ```bash
+   docker-compose build
+   ```
+
+   > Si querés forzar la reconstrucción sin usar caché:
+
+   ```bash
+   docker-compose build --no-cache
+   ```
+
+3. ### 🔁 Detener y eliminar el contenedor anterior
+
+   Si no usás `docker-compose`:
+
+   ```bash
+   docker stop nombre-del-contenedor
+   docker rm nombre-del-contenedor
+   ```
+
+   Si usás `docker-compose`:
+
+   ```bash
+   docker-compose down
+   ```
+
+4. ### 🚀 Volver a levantar el contenedor con la imagen nueva
+
+   Con `docker run`:
+
+   ```bash
+   docker run -d --name nombre-del-contenedor -p 8000:80 nombre-de-tu-imagen
+   ```
+
+   Con `docker-compose`:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+---
+
+### 📝 Recomendaciones
+
+* Usá `docker-compose` siempre que puedas, ya que simplifica mucho el manejo de servicios y contenedores.
+* Asegurate de que los volúmenes no estén sobrescribiendo los archivos que cambiaste en el repositorio (por ejemplo, si estás montando código con `volumes`, el contenido del host puede sobreescribir el de la imagen nueva).
+* Si usás archivos `.env`, asegurate de que estén actualizados si se agregaron nuevas variables en el `pull`.
+
+---
+
+¿Querés que revise tus archivos (`Dockerfile`, `docker-compose.yml`, etc.) para darte los comandos exactos que deberías usar en tu caso? Podes pegar el contenido o subir los archivos.
+
