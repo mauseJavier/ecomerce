@@ -14,9 +14,11 @@ export const ProductService = {
         return response.data;
     },
 
-    async searchProducts(query) {
+    async searchProducts(query, cat = null) {
+        const params = { q: query };
+        if (cat) params.cat = cat;
         const response = await axios.get(`${config.apiUrl}/inventarios/${config.empresa_id}/buscar`, {
-            params: { q: query }
+            params
         });
         console.log('Response from searchProducts:', response.data);
         if (!response.data || !response.data.data) {

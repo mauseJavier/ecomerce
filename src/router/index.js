@@ -10,6 +10,11 @@ const router = createRouter({
             children: [
                 {
                     path: '/',
+                    name: 'Home',
+                    component: () => import('@/components/HomePage.vue')
+                },
+                {
+                    path: '/productos',
                     name: 'Productos',
                     component: () => import('@/views/uikit/ListDoc.vue')
                 },
@@ -113,6 +118,17 @@ const router = createRouter({
                     path: '/checkout',
                     name: 'checkout',
                     component: () => import('@/views/pages/Checkout.vue')
+                },
+                {
+                    path: '/articulo/:id',
+                    name: 'ArticuloDetalle',
+                    component: () => import('@/components/ArticuloDetalle.vue'),
+                    props: true
+                },
+                {
+                    path: '/favoritos',
+                    name: 'Favoritos',
+                    component: () => import('@/components/FavoritosWidget.vue')
                 }
             ]
         },

@@ -53,7 +53,7 @@
 <script setup>
 import config from '@/config'
 import { useCartStore } from '@/store/cart'
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const cart = useCartStore()
 const mensaje = ref('')
@@ -69,6 +69,22 @@ const form = ref({
   tipoContribuyente: '',
   telefonoCliente: ''
 })
+
+const STORAGE_KEY = 'checkoutFormData'
+
+onMounted(() => {
+  const saved = localStorage.getItem(STORAGE_KEY)
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved)
+      Object.assign(form.value, parsed)
+    } catch (e) {}
+  }
+})
+
+watch(form, (val) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(val))
+}, { deep: true })
 
 async function enviarPedido() {
   mensaje.value = ''
@@ -106,6 +122,7 @@ async function enviarPedido() {
     if (!response.ok) throw new Error('Error al enviar el pedido')
     mensaje.value = '¡Pedido enviado correctamente!'
     cart.clearCart()
+    // localStorage.removeItem(STORAGE_KEY) // Ya no se borra para recordar los datos
   } catch (e) {
     error.value = e.message || 'Error inesperado al enviar el pedido'
   }

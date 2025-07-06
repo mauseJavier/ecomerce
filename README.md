@@ -46,6 +46,31 @@ docker run -d  --name tiendaimpotecno  --restart unless-stopped  --network redPr
 
 Esto levantará la app en el puerto 80 usando Nginx y las variables de entorno de tu archivo `.env`.
 
+## Despliegue con Docker Compose personalizado
+
+Para levantar la app en un contenedor usando el archivo `dockerComposeSuperKioscoFVT.yml`:
+
+1. Copia y edita el archivo `.env.example` como `.env` si necesitas personalizar variables:
+   ```bash
+   cp .env.example .env
+   # Edita .env con tus valores reales
+   ```
+
+2. Levanta el contenedor:
+   ```bash
+   docker compose -f dockerComposeSuperKioscoFVT.yml up --build -d
+   ```
+
+Esto expondrá la app en `http://localhost:8080` (puedes cambiar el puerto en el archivo YAML).
+
+- Las variables de entorno se leen desde `.env.example` (o `.env` si lo cambias en el YAML).
+- El contenedor se reiniciará automáticamente si se detiene.
+
+Para detener y eliminar el contenedor:
+```bash
+docker compose -f dockerComposeSuperKioscoFVT.yml down
+```
+
 ## Características principales
 - Multiempresa: configurable desde `src/config.js`.
 - Consumo de productos y envío de pedidos vía API.

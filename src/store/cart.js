@@ -5,13 +5,13 @@ export const useCartStore = defineStore('cart', {
     items: [] // Cada item: { producto, cantidad }
   }),
   actions: {
-    addToCart(producto) {
+    addToCart(producto, cantidad = 1) {
       const index = this.items.findIndex(i => i.producto.id === producto.id)
       if (index !== -1) {
-        // Asegura reactividad
-        this.items[index] = { ...this.items[index], cantidad: this.items[index].cantidad + 1 }
+        // Suma la cantidad recibida
+        this.items[index] = { ...this.items[index], cantidad: this.items[index].cantidad + cantidad }
       } else {
-        this.items.push({ producto, cantidad: 1 })
+        this.items.push({ producto, cantidad })
       }
     },
     removeFromCart(productoId) {
@@ -34,7 +34,6 @@ export const useCartStore = defineStore('cart', {
       precioLista: i.producto.precio1,
       descuento: 0,
       precio: i.producto.precio1,
-      costo: i.producto.costo,
       iva: i.producto.iva,
       cantidad: i.cantidad,
       rubro: i.producto.rubro,
