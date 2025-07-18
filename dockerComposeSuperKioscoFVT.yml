@@ -1,0 +1,17 @@
+services:
+  tienda-superkiosco-fvt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tienda-superkiosco-fvt
+    # ports:
+    #   - "8099:80"
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - redPrincipal
+
+networks:
+  redPrincipal:
+    external: true

@@ -1,0 +1,17 @@
+services:
+  tienda-llfactura:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tienda-llfactura
+    # ports:
+    #   - "8099:80"
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - redPrincipal
+
+networks:
+  redPrincipal:
+    external: true

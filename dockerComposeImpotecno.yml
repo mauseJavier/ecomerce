@@ -1,0 +1,17 @@
+services:
+  tienda-impotecno:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tienda-impotecno
+    # ports:
+    #   - "8089:80"
+    env_file:
+      - .env.impotecno
+    restart: unless-stopped
+    networks:
+      - redPrincipal
+
+networks:
+  redPrincipal:
+    external: true

@@ -142,7 +142,7 @@ console.log('stocks', stockDisponible.value);
             </div>
             <div class="flex items-center gap-3 mt-2">
               <input type="number" v-model.number="cantidad" min="1" :max="stockDisponible.length ? stockDisponible[0].stock : 99" class="w-20 px-2 py-1 border border-primary/30 rounded focus:outline-none focus:ring-2 focus:ring-primary" />
-              <button @click="agregarAlCarrito" class="px-4 py-2 bg-success text-white rounded-full shadow hover:bg-success/80 transition flex items-center gap-2">
+              <button @click="agregarAlCarrito" class="px-4 py-2 rounded-full shadow-lg bg-primary text-white   hover:bg-success/80 hover:scale-105 transition-transform flex items-center gap-2">
                 <i class="pi pi-shopping-cart"></i> Agregar al carrito
               </button>
             </div>
