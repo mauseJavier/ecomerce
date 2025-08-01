@@ -1,9 +1,11 @@
 import { computed, reactive } from 'vue';
 
+const defaultPrimary = import.meta.env.VITE_DEFAULT_PRIMARY || 'sky';
+const defaultSurface = import.meta.env.VITE_DEFAULT_SURFACE || 'slate';
 const layoutConfig = reactive({
     preset: 'Aura',
-    primary: 'emerald',
-    surface: null,
+    primary: defaultPrimary,
+    surface: defaultSurface,
     darkTheme: false,
     menuMode: 'static'
 });
@@ -20,15 +22,19 @@ const layoutState = reactive({
 
 const DARK_MODE_KEY = 'app_dark_mode';
 
-// Leer preferencia de localStorage al iniciar
+
+// Leer preferencia de localStorage al iniciar, si no existe usar VITE_DEFAULT_THEME
 const savedDark = localStorage.getItem(DARK_MODE_KEY);
 if (savedDark !== null) {
     layoutConfig.darkTheme = savedDark === 'true';
-    if (layoutConfig.darkTheme) {
-        document.documentElement.classList.add('app-dark');
-    } else {
-        document.documentElement.classList.remove('app-dark');
-    }
+} else {
+    const defaultTheme = import.meta.env.VITE_DEFAULT_THEME || 'light';
+    layoutConfig.darkTheme = defaultTheme === 'dark';
+}
+if (layoutConfig.darkTheme) {
+    document.documentElement.classList.add('app-dark');
+} else {
+    document.documentElement.classList.remove('app-dark');
 }
 
 export function useLayout() {

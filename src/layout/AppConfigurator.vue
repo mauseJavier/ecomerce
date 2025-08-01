@@ -4,7 +4,23 @@ import { $t, updatePreset, updateSurfacePalette } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import Lara from '@primeuix/themes/lara';
 import Nora from '@primeuix/themes/nora';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+onMounted(() => {
+    // Aplica el color primario y surface configurados en el .env al iniciar
+    let primaryColor = primaryColors.value.find(c => c.name === layoutConfig.primary);
+    if (!primaryColor) {
+        console.warn('[Theme] Color primario no encontrado:', layoutConfig.primary, '. Usando "emerald" por defecto.');
+        primaryColor = primaryColors.value.find(c => c.name === 'emerald');
+    }
+    applyTheme('primary', primaryColor);
+
+    let surfaceColor = surfaces.value.find(s => s.name === layoutConfig.surface);
+    if (!surfaceColor) {
+        console.warn('[Theme] Color surface no encontrado:', layoutConfig.surface, '. Usando "slate" por defecto.');
+        surfaceColor = surfaces.value.find(s => s.name === 'slate');
+    }
+    applyTheme('surface', surfaceColor);
+});
 
 const { layoutConfig, isDarkTheme } = useLayout();
 

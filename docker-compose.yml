@@ -1,7 +1,6 @@
-version: '3'
 services:
-  tiendaLLFactura:
-    container_name: tiendaLLFactura
+  tiendaDesarrollo:
+    container_name: tiendaDesarrollo
     image: node:18-alpine
     working_dir: /app
     volumes:

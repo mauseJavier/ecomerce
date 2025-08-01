@@ -1,7 +1,8 @@
 <template>
-  <div class="min-h-[80vh] flex flex-col items-center justify-center py-12 px-4 bg-surface text-surface-content">
-    <div class="max-w-3xl w-full text-center mb-10">
-      <img :src="config.logo" alt="Logo" class="mx-auto mb-6 w-32 h-32 object-contain rounded-full shadow-lg border-4 border-primary/20 bg-surface-100" />
+
+  <div class=" flex flex-col items-center justify-center py-12 px-4 bg-surface text-surface-content">
+    <div class=" w-full text-center mb-10">
+      <img :src="config.logo" alt="Logo" style="width: 200px; height: 200px;" class="mx-auto mb-6 object-contain rounded-full shadow-lg border-4 border-primary/20 bg-surface-100" />
       <h1 class="text-4xl md:text-5xl font-extrabold text-primary mb-4 drop-shadow">Bienvenido a {{ config.nombreNegocio }}</h1>
       <p class="text-lg md:text-xl text-primary/80 mb-6">¡Descubre los mejores productos, ofertas y promociones exclusivas para vos!</p>
     </div>

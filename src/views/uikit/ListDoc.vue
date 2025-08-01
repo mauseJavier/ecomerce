@@ -215,22 +215,21 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-col">
-        <div class="card">
-            <div class="flex justify-between items-center mb-4">
-                <div class="font-semibold text-xl flex items-center gap-2">
-                  Productos
-                  <span v-if="categoriaActiva" class="ml-2 text-blue-600 flex items-center gap-2">
-                    / {{ categoriaActiva }}
-                    <button @click="limpiarCategoria" class="ml-2 px-2 py-0.5 rounded bg-red-100 text-red-600 hover:bg-red-200 text-xs">x</button>
-                  </span>
-                </div>
-                <form @submit.prevent="buscarProductos" class="flex gap-2 items-center">
+        <div class="card" id="productos-list-header">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-2 md:gap-0">
+                <form @submit.prevent="buscarProductos" class="flex gap-2 items-center w-full md:w-auto">
                     <input v-model="searchTerm" type="text" placeholder="Buscar producto..." class="border-2 border-blue-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition rounded-full px-4 py-2 shadow-sm outline-none text-gray-700 placeholder-gray-400 bg-white" />
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full font-semibold shadow transition disabled:opacity-50" :disabled="loading">
                         <span v-if="loading">Buscando...</span>
                         <span v-else>Buscar</span>
                     </button>
                 </form>
+                <div class="font-semibold text-xl flex items-center gap-2 w-full md:w-auto justify-end md:justify-start mt-2 md:mt-0">
+                  <span v-if="categoriaActiva" class="ml-2 text-blue-600 flex items-center gap-2">
+                    / {{ categoriaActiva }}
+                    <button @click="limpiarCategoria" class="ml-2 px-2 py-0.5 rounded bg-red-100 text-red-600 hover:bg-red-200 text-xs">x</button>
+                  </span>
+                </div>
             </div>
             <DataView :value="products" :layout="layout">
                 <template #header>

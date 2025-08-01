@@ -4,6 +4,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 const router = createRouter({
     history: createWebHistory(),
     routes: [
+        // Ruta de presentación fuera del layout principal
+        {
+            path: '/presentacion',
+            name: 'Presentacion',
+            component: () => import('@/views/pages/Presentacion.vue')
+        },
         {
             path: '/',
             component: AppLayout,
@@ -48,6 +54,7 @@ const router = createRouter({
                     name: 'tree',
                     component: () => import('@/views/uikit/TreeDoc.vue')
                 },
+                // ...
                 {
                     path: '/uikit/panel',
                     name: 'panel',
