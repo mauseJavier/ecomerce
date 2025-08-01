@@ -1,11 +1,11 @@
 services:
-  tienda-llfactura:
+  tienda-su-mayorista:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: tienda-llfactura
+    container_name: tienda-su-mayorista
     # ports:
-    #   - "5175:80"
+    #   - "5176:80"
     restart: unless-stopped
     networks:
       - redPrincipal

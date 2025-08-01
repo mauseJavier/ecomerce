@@ -5,9 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: tienda-impotecno
     # ports:
-    #   - "8089:80"
-    env_file:
-      - .env.impotecno
+    #   - "5174:80"
     restart: unless-stopped
     networks:
       - redPrincipal

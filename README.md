@@ -167,3 +167,15 @@ Cuando tenés un proyecto clonado que usa Docker y querés **actualizar la image
 
 ¿Querés que revise tus archivos (`Dockerfile`, `docker-compose.yml`, etc.) para darte los comandos exactos que deberías usar en tu caso? Podes pegar el contenido o subir los archivos.
 
+
+Descarta todos los cambios locales y archivos no versionados:
+
+
+git reset --hard
+git clean -fd
+
+Trae los últimos cambios del repositorio remoto:
+
+git pull origin main
+# O la rama que corresponda, por ejemplo:
+# git pull origin master

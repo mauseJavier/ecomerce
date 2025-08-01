@@ -6,8 +6,11 @@
       </button>
       <div class="overflow-hidden w-full h-full">
         <div class="flex transition-transform duration-700 h-full" :style="{ transform: `translateX(-${current * 100}vw)` }">
-          <div v-for="(slide, idx) in slides" :key="idx" class="min-w-full h-screen flex flex-col items-end justify-end bg-cover bg-center relative" :style="`background-image: url('${slide.image}')`">
-            <div class="w-full bg-black bg-opacity-70 px-8 py-6 rounded flex flex-col items-center max-w-2xl mx-auto mb-24 absolute left-1/2 -translate-x-1/2 bottom-0">
+          <div v-for="(slide, idx) in slides" :key="idx" class="min-w-full flex flex-col items-end justify-end relative presentacion-slide-bg">
+            <div class="w-full h-full flex items-center justify-center bg-black bg-opacity-80 rounded-t-2xl">
+              <img :src="slide.image" :alt="slide.title" class="max-h-[200vh] max-w-[200vw] object-contain rounded-xl shadow-lg bg-white/10" />
+            </div>
+            <div class="w-full bg-black bg-opacity-70 px-8 py-6 rounded-b flex flex-col items-center max-w-2xl mx-auto mb-24 absolute left-1/2 -translate-x-1/2 bottom-0">
               <h1 class="text-3xl md:text-5xl font-bold mb-2 text-white drop-shadow text-center">{{ slide.title }}</h1>
               <p class="text-2xl md:text-4xl font-extrabold text-primary-200 mb-2">${{ slide.precio }}</p>
             </div>
