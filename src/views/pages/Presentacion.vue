@@ -12,7 +12,7 @@
             </div>
             <div class="w-full bg-black bg-opacity-70 px-8 py-6 rounded-b flex flex-col items-center max-w-2xl mx-auto mb-24 absolute left-1/2 -translate-x-1/2 bottom-0">
               <h1 class="text-3xl md:text-5xl font-bold mb-2 text-white drop-shadow text-center">{{ slide.title }}</h1>
-              <p class="text-2xl md:text-4xl font-extrabold text-primary-200 mb-2">${{ slide.precio }}</p>
+              <p class="text-2xl md:text-4xl font-extrabold text-primary-200 mb-2">{{ formatPrecio(slide.precio) }}</p>
             </div>
           </div>
         </div>
@@ -56,6 +56,12 @@ function startAutoplay() {
 }
 function stopAutoplay() {
   if (interval) clearInterval(interval);
+}
+
+function formatPrecio(valor) {
+  if (typeof valor !== 'number') valor = Number(valor)
+  if (isNaN(valor)) return ''
+  return valor.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 }
 
 onMounted(async () => {

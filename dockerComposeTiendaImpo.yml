@@ -1,0 +1,15 @@
+services:
+  tienda-tiendaimpo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tienda-tiendaimpo
+    # ports:
+    #   - "5174:80"
+    restart: unless-stopped
+    networks:
+      - redPrincipal
+
+networks:
+  redPrincipal:
+    external: true

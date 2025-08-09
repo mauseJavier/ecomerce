@@ -2,7 +2,7 @@
 
   <div class=" flex flex-col items-center justify-center py-12 px-4 bg-surface text-surface-content">
     <div class=" w-full text-center mb-10">
-      <img :src="config.logo" alt="Logo" style="width: 200px; height: 200px;" class="mx-auto mb-6 object-contain rounded-full shadow-lg border-4 border-primary/20 bg-surface-100" />
+      <img :src="config.logo" alt="Logo" style="width: 200px; height: 200px;" class="mx-auto mb-6 object-contain rounded-full shadow-lg border-4 border-primary/20" />
       <h1 class="text-4xl md:text-5xl font-extrabold text-primary mb-4 drop-shadow">Bienvenido a {{ config.nombreNegocio }}</h1>
       <p class="text-lg md:text-xl text-primary/80 mb-6">¡Descubre los mejores productos, ofertas y promociones exclusivas para vos!</p>
     </div>
@@ -20,7 +20,7 @@
                 <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">{{ art.detalle }}</h2>
                 <p class="text-base md:text-lg text-surface-content/70 mb-3 line-clamp-3 text-center">{{ art.comentarioTienda || 'Sin descripción' }}</p>
                 <span class="inline-block bg-primary/10 text-primary px-3 py-1 rounded text-base font-semibold mb-3">{{ art.rubro }}</span>
-                <span class="text-2xl font-extrabold text-primary mb-2">${{ art.precio1 }}</span>
+                <span class="text-2xl font-extrabold text-primary mb-2">{{ formatPrecio(art.precio1) }}</span>
                 <router-link :to="`/articulo/${art.id}`" class="mt-2 px-6 py-3 bg-primary text-white rounded-full shadow hover:bg-primary/80 transition text-base">Ver detalle</router-link>
               </div>
             </div>
@@ -98,6 +98,12 @@ function startAutoplay() {
 }
 function stopAutoplay() {
   if (interval) clearInterval(interval);
+}
+
+function formatPrecio(valor) {
+  if (typeof valor !== 'number') valor = Number(valor)
+  if (isNaN(valor)) return ''
+  return valor.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 }
 
 onMounted(async () => {

@@ -1,4 +1,9 @@
 <script setup>
+function formatPrecio(valor) {
+  if (typeof valor !== 'number') valor = Number(valor)
+  if (isNaN(valor)) return ''
+  return valor.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+}
 import config from '@/config';
 import { ProductService } from '@/service/ProductService';
 import { useCartStore } from '@/store/cart';
@@ -269,7 +274,7 @@ onMounted(() => {
                                         </div>
                                     </div>
                                     <div class="flex flex-col md:items-end gap-8">
-                                        <span class="text-xl font-semibold">${{ item.precio1 }}</span>
+                                        <span class="text-xl font-semibold">{{ formatPrecio(item.precio1) }}</span>
                                         <div class="flex flex-row-reverse md:flex-row gap-2">
                                             <Button icon="pi pi-heart" outlined :class="esFavorito(item) ? 'text-red-500 border-red-400' : ''" @click.stop="toggleFavorito(item)" :label="esFavorito(item) ? 'Quitar favorito' : 'Favorito'" />
                                             <Button icon="pi pi-shopping-cart" label="Comprar" :disabled="false" class="flex-auto md:flex-initial whitespace-nowrap" @click.stop="handleAddToCart(item)" ></Button>
@@ -311,7 +316,7 @@ onMounted(() => {
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-6 mt-6">
-                                        <span class="text-2xl font-semibold">${{ item.precio1 }}</span>
+                                        <span class="text-2xl font-semibold">{{ formatPrecio(item.precio1) }}</span>
                                         <div class="flex gap-2">
                                             <Button icon="pi pi-shopping-cart" label="Comprar" :disabled="false" class="flex-auto whitespace-nowrap" @click.stop="handleAddToCart(item)" ></Button>
                                             <Button icon="pi pi-heart" outlined></Button>

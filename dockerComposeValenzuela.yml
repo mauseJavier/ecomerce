@@ -1,0 +1,15 @@
+services:
+  tienda-valenzuela:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tienda-valenzuela
+    # ports:
+    #   - "5174:80"
+    restart: unless-stopped
+    networks:
+      - redPrincipal
+
+networks:
+  redPrincipal:
+    external: true

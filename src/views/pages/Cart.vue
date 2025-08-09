@@ -16,11 +16,11 @@
         <tbody>
           <tr v-for="item in cart.items" :key="item.producto.id">
             <td>{{ item.producto.detalle }}</td>
-            <td>${{ item.producto.precio1 }}</td>
+            <td>{{ formatPrecio(item.producto.precio1) }}</td>
             <td>
               <input type="number" min="1" v-model.number="item.cantidad" @change="updateQuantity(item.producto.id, item.cantidad)" class="w-16 border rounded px-2 py-1" />
             </td>
-            <td>${{ (item.producto.precio1 * item.cantidad).toFixed(2) }}</td>
+            <td>{{ formatPrecio(item.producto.precio1 * item.cantidad) }}</td>
             <td>
               <button @click="removeFromCart(item.producto.id)" class="text-red-500">Eliminar</button>
             </td>
@@ -28,7 +28,7 @@
         </tbody>
       </table>
       <div class="flex justify-between items-center mb-4">
-        <span class="font-bold">Total: ${{ cart.total.toFixed(2) }}</span>
+        <span class="font-bold">Total: {{ formatPrecio(cart.total) }}</span>
         <button @click="cart.clearCart()" class="text-red-500">Vaciar carrito</button>
       </div>
       <router-link to="/checkout">
@@ -50,5 +50,10 @@ function updateQuantity(id, cantidad) {
 }
 function removeFromCart(id) {
   cart.removeFromCart(id)
+}
+function formatPrecio(valor) {
+  if (typeof valor !== 'number') valor = Number(valor)
+  if (isNaN(valor)) return ''
+  return valor.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 }
 </script>

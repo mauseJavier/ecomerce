@@ -1,4 +1,9 @@
 <script setup>
+function formatPrecio(valor) {
+  if (typeof valor !== 'number') valor = Number(valor)
+  if (isNaN(valor)) return ''
+  return valor.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+}
 import config from '@/config';
 import { useCartStore } from '@/store/cart';
 import axios from 'axios';
@@ -152,15 +157,15 @@ console.log('stocks', stockDisponible.value);
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="rounded-lg shadow p-4 bg-primary/10 flex flex-col items-center">
               <span class="text-sm text-primary font-semibold">{{ labels.precio1 }}</span>
-              <span class="text-2xl font-bold text-primary">${{ articulo.precio1 }}</span>
+              <span class="text-2xl font-bold text-primary">{{ formatPrecio(articulo.precio1) }}</span>
             </div>
             <div class="rounded-lg shadow p-4 bg-success/10 flex flex-col items-center">
               <span class="text-sm text-success font-semibold">{{ labels.precio2 }}</span>
-              <span class="text-2xl font-bold text-success">${{ articulo.precio2 }}</span>
+              <span class="text-2xl font-bold text-success">{{ formatPrecio(articulo.precio2) }}</span>
             </div>
             <div class="rounded-lg shadow p-4 bg-accent/10 flex flex-col items-center">
               <span class="text-sm text-accent font-semibold">{{ labels.precio3 }}</span>
-              <span class="text-2xl font-bold text-accent">${{ articulo.precio3 }}</span>
+              <span class="text-2xl font-bold text-accent">{{ formatPrecio(articulo.precio3) }}</span>
             </div>
           </div>
         </div>

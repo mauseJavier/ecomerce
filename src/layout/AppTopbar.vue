@@ -39,7 +39,7 @@ const totalArticulos = computed(() => items.value.reduce((sum, i) => sum + i.can
                     </g>
                 </svg>
 
-                <span>{{ config.nombreNegocio }}</span>
+                <!-- <span>{{ config.nombreNegocio }}</span> -->
             </router-link>
         </div>
 
