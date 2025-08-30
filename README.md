@@ -170,12 +170,13 @@ Cuando tenés un proyecto clonado que usa Docker y querés **actualizar la image
 
 Descarta todos los cambios locales y archivos no versionados:
 
+Trae los últimos cambios del repositorio remoto:
 
 git reset --hard
 git clean -fd
 
-Trae los últimos cambios del repositorio remoto:
 
 git pull origin main
+
 # O la rama que corresponda, por ejemplo:
 # git pull origin master

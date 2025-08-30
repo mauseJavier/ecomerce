@@ -52,17 +52,23 @@ const imagenes = computed(() => {
 
 const stockDisponible = computed(() => {
   if (!articulo.value || !Array.isArray(articulo.value.stocks)) return [];
-  // Si hay varios objetos de stock para el mismo depósito, sumarlos
-  const porDeposito = {};
+  // Sumar stock por depósito, talle y color si existen
+  const porDepositoTalleColor = {};
   for (const s of articulo.value.stocks) {
-    if (!porDeposito[s.deposito_id]) {
-      porDeposito[s.deposito_id] = { ...s };
+    // Clave única por depósito + talle + color (si existen)
+    const key = [
+      s.deposito_id,
+      s.talle !== undefined ? s.talle : '',
+      s.color !== undefined ? s.color : ''
+    ].join('-');
+    if (!porDepositoTalleColor[key]) {
+      porDepositoTalleColor[key] = { ...s };
     } else {
-      porDeposito[s.deposito_id].stock += s.stock;
+      porDepositoTalleColor[key].stock += s.stock;
     }
   }
-  // Solo mostrar los depósitos con stock > 0
-  return Object.values(porDeposito).filter(s => s.stock > 0);
+  // Solo mostrar los que tienen stock > 0
+  return Object.values(porDepositoTalleColor).filter(s => s.stock > 0);
 });
 
 function agregarAlCarrito() {
@@ -123,19 +129,17 @@ console.log('stocks', stockDisponible.value);
             </span>
           </div>
 
-          <!-- Mostrar stock disponible por depósito -->
+          <!-- Mostrar stock disponible por depósito, talle y color si existen -->
           <div v-if="stockDisponible.length" class="mb-2">
             <h3 class="text-base font-bold text-success mb-1 flex items-center gap-1">
               <i class="pi pi-box"></i> Stock disponible:
             </h3>
             <ul class="pl-4 text-success/80 text-sm space-y-1">
-              <li v-for="s in stockDisponible" :key="s.deposito_id">
-                <span class="font-semibold">{{ s.deposito_nombre }}: </span>
-                  <span>
-                    <strong>
-                      {{ s.stock }}
-                  </strong>
-                </span>
+              <li v-for="s in stockDisponible" :key="s.deposito_id + '-' + (s.talle || '') + '-' + (s.color || '')">
+                <span class="font-semibold">{{ s.deposito_nombre }}:</span>
+                <span v-if="s.talle" class="ml-2 text-xs text-primary px-2 py-0.5 rounded">Talle: </span>{{ s.talle }}
+                <span v-if="s.color" class="ml-2 text-xs text-primary px-2 py-0.5 rounded">Color: </span>{{ s.color }}
+                <span class="ml-2 text-xs text-primary px-2 py-0.5 rounded"> Stock: </span><strong>{{ s.stock }}</strong>
               </li>
             </ul>
           </div>
