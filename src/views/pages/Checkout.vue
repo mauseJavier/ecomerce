@@ -26,10 +26,10 @@
           <label class="block font-bold mb-1">Domicilio</label>
           <input v-model="form.domicilio" class="w-full border rounded px-2 py-1" />
         </div>
-        <div>
+        <!-- <div>
           <label class="block font-bold mb-1">Correo cliente</label>
           <input v-model="form.correoCliente" class="w-full border rounded px-2 py-1" />
-        </div>
+        </div> -->
         <!-- <div>
           <label class="block font-bold mb-1">Tipo contribuyente</label>
           <input v-model="form.tipoContribuyente" class="w-full border rounded px-2 py-1" />
@@ -89,12 +89,16 @@ watch(form, (val) => {
 async function enviarPedido() {
   mensaje.value = ''
   error.value = ''
+
   // Validar correo electrónico
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(form.value.correoCliente)) {
-    error.value = 'Por favor, ingrese un correo electrónico válido.';
-    return;
-  }
+
+  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // if (!emailRegex.test(form.value.correoCliente)) {
+  //   error.value = 'Por favor, ingrese un correo electrónico válido.';
+  //   return;
+  // }
+
+
   const payload = {
     tipoComprobante: form.value.tipoComprobante,
     total: cart.total,
