@@ -43,6 +43,59 @@
         <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Promo" class="w-28 h-28 object-contain" />
       </div>
     </div>
+    
+    <!-- Banner de métodos de pago y entrega -->
+    <div class="w-full max-w-5xl mx-auto mb-8">
+      <div class="rounded-xl bg-surface-card shadow-lg p-6 border border-primary/10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          
+          <!-- VISA - 6 cuotas sin interés -->
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-8 bg-blue-600 rounded flex items-center justify-center">
+                <span class="text-white font-bold text-sm">VISA</span>
+              </div>
+            </div>
+            <div>
+              <p class="text-primary font-medium text-sm">6 cuotas sin interés</p>
+              <a href="#" class="text-secondary text-sm hover:underline">Ver más</a>
+            </div>
+          </div>
+
+          <!-- Retiro en tienda -->
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <p class="text-primary font-medium text-sm">Pedí y retiré mañana</p>
+              <p class="text-primary/60 text-xs">en todas las tiendas</p>
+            </div>
+          </div>
+
+          <!-- Entrega 24hs -->
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17 5H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h1.17c.41 1.17 1.52 2 2.83 2s2.42-.83 2.83-2h4.34c.41 1.17 1.52 2 2.83 2s2.42-.83 2.83-2H21c1.1 0 2-.9 2-2v-3l-3-4zM7 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm10 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM17 12V7H3v5h14zm2-2l1.5 2H19V10h.5z"/>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <p class="text-primary font-medium text-sm">Recibí tu pedido</p>
+              <p class="text-primary/60 text-xs">en 24 hs*</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
     <div class="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
       <div class="rounded-xl bg-surface-card shadow-lg p-6 flex flex-col items-center border border-primary/10">
         <h4 class="text-xl font-bold text-primary mb-2">¿Por qué elegirnos?</h4>
