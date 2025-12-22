@@ -1,6 +1,12 @@
 <template>
   <div class="card">
-    <h2 class="font-semibold text-xl mb-4">Carrito de compras</h2>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="font-semibold text-xl">Carrito de compras</h2>
+      <button v-if="cart.items.length > 0" @click="cart.clearCart()" class="flex items-center space-x-2 text-red-500 hover:text-red-700 p-2 rounded hover:bg-red-50 transition" title="Vaciar carrito">
+        <i class="pi pi-trash text-lg"></i>
+        <span class="font-medium">CANCELAR COMPRA</span>
+      </button>
+    </div>
     <div v-if="cart.items.length === 0">El carrito está vacío.</div>
     <div v-else>
       <table class="w-full mb-4">
@@ -22,14 +28,15 @@
             </td>
             <td>{{ formatPrecio(item.producto.precio1 * item.cantidad) }}</td>
             <td>
-              <button @click="removeFromCart(item.producto.id)" class="text-red-500">Eliminar</button>
+              <button @click="removeFromCart(item.producto.id)" class="text-red-500 hover:text-red-700 p-2 rounded hover:bg-red-50 transition" title="Eliminar producto">
+                <i class="pi pi-trash text-lg"></i>
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="flex justify-between items-center mb-4">
+      <div class="mb-4">
         <span class="font-bold">Total: {{ formatPrecio(cart.total) }}</span>
-        <button @click="cart.clearCart()" class="text-red-500">Vaciar carrito</button>
       </div>
       <router-link to="/checkout">
         <button class="bg-blue-500 text-white px-4 py-2 rounded">Finalizar compra</button>

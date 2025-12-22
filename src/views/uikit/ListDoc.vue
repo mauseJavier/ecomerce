@@ -223,11 +223,13 @@ onMounted(() => {
         <div class="card" id="productos-list-header">
             <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-2 md:gap-0">
                 <form @submit.prevent="buscarProductos" class="flex gap-2 items-center w-full md:w-auto">
-                    <input v-model="searchTerm" type="text" placeholder="Buscar producto..." class="border-2 border-blue-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition rounded-full px-4 py-2 shadow-sm outline-none text-gray-700 placeholder-gray-400 bg-white" />
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full font-semibold shadow transition disabled:opacity-50" :disabled="loading">
-                        <span v-if="loading">Buscando...</span>
-                        <span v-else>Buscar</span>
-                    </button>
+                    <div class="relative w-full md:w-auto">
+                        <input v-model="searchTerm" type="text" placeholder="Buscar producto..." class="border-2 border-blue-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition rounded-full pl-12 py-2 pr-4 shadow-sm outline-none text-gray-700 placeholder-gray-400 bg-white w-full" />
+                        <button type="submit" class="absolute top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow transition disabled:opacity-50" style="left: -1px;" :disabled="loading">
+                            <i v-if="loading" class="pi pi-spin pi-spinner text-sm"></i>
+                            <i v-else class="pi pi-search text-sm"></i>
+                        </button>
+                    </div>
                 </form>
                 <div class="font-semibold text-xl flex items-center gap-2 w-full md:w-auto justify-end md:justify-start mt-2 md:mt-0">
                   <span v-if="categoriaActiva" class="ml-2 text-blue-600 flex items-center gap-2">
@@ -296,10 +298,10 @@ onMounted(() => {
                                         <div class="relative w-full flex items-center justify-center">
                                             <button v-if="getProductImages(item).length > 1" @click.stop="prevImage(item)" class="absolute left-0 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow"><i class="pi pi-chevron-left"></i></button>
                                             <img
-                                                class="rounded w-full"
+                                                class="rounded object-cover"
                                                 :src="getCurrentImage(item)"
                                                 :alt="item.detalle"
-                                                style="max-width: 300px"
+                                                style="width: 250px; height: 200px;"
                                             />
                                             <button v-if="getProductImages(item).length > 1" @click.stop="nextImage(item)" class="absolute right-0 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow"><i class="pi pi-chevron-right"></i></button>
                                         </div>
