@@ -41,7 +41,6 @@
       </div>
       <div class="flex justify-between items-center mb-4">
         <span class="font-bold">Total: ${{ cart.total.toFixed(2) }}</span>
-        <router-link to="/carrito" class="text-blue-500">Volver al carrito</router-link>
       </div>
       <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Enviar pedido</button>
     </form>

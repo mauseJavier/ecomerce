@@ -19,6 +19,7 @@ const loading = ref(true);
 const error = ref('');
 const labels = config.precioLabels;
 const cantidad = ref(1);
+const precioSeleccionado = ref('precio1'); // Por defecto selecciona el primer precio
 
 onMounted(async () => {
   loading.value = true;
@@ -77,16 +78,37 @@ function agregarAlCarrito() {
     Swal.fire('Cantidad inválida', 'Debes seleccionar al menos 1 unidad.', 'warning');
     return;
   }
-  const item = { ...articulo.value };
+  const item = { 
+    ...articulo.value,
+    precio: articulo.value[precioSeleccionado.value], // Usar el precio seleccionado
+    tipoListaSeleccionada: precioSeleccionado.value // Guardar qué lista fue seleccionada
+  };
   cart.addToCart(item, cantidad.value);
   Swal.fire({
     title: 'Agregado',
-    text: 'El producto fue agregado al carrito',
+    text: `El producto fue agregado al carrito con ${labels[precioSeleccionado.value]}`,
     icon: 'success',
     timer: 1500,
     showConfirmButton: false
   });
   cantidad.value = 1; // Resetea el input de cantidad
+}
+
+function decrementarCantidad() {
+  if (cantidad.value > 1) {
+    cantidad.value--;
+  }
+}
+
+function incrementarCantidad() {
+  const maxStock = stockDisponible.value.length ? stockDisponible.value[0].stock : 99;
+  if (cantidad.value < maxStock) {
+    cantidad.value++;
+  }
+}
+
+function seleccionarPrecio(tipoPrecio) {
+  precioSeleccionado.value = tipoPrecio;
 }
 
 console.log('stocks', stockDisponible.value);
@@ -102,7 +124,7 @@ console.log('stocks', stockDisponible.value);
     <div v-if="loading" class="text-center py-8 text-primary">Cargando...</div>
     <div v-else-if="error" class="text-center text-error py-8 font-bold">{{ error }}</div>
     <div v-else-if="articulo" class="rounded-lg shadow-lg p-6 card bg-surface-card">
-      <div class="flex flex-col md:flex-row gap-8">
+      <div class="flex flex-col md:flex-row gap-8 mb-8">
         <!-- Galería de imágenes -->
         <div class="flex-1 flex flex-col gap-3 items-center">
           <img v-for="(img, idx) in imagenes" :key="idx" :src="img" :alt="articulo.detalle" class="rounded-lg w-full max-w-md shadow transition-transform hover:scale-105 border border-surface-300 bg-surface-200" />
@@ -150,27 +172,83 @@ console.log('stocks', stockDisponible.value);
               <span class="bg-surface-200 text-primary px-2 py-1 rounded text-sm font-mono">{{ articulo.codigo }}</span>
             </div>
             <div class="flex items-center gap-3 mt-2">
-              <input type="number" v-model.number="cantidad" min="1" :max="stockDisponible.length ? stockDisponible[0].stock : 99" class="w-20 px-2 py-1 border border-primary/30 rounded focus:outline-none focus:ring-2 focus:ring-primary" />
+              <!-- Control de cantidad con botones laterales -->
+              <div class="flex items-center border border-primary/30 rounded-lg overflow-hidden bg-white">
+                <button 
+                  @click="decrementarCantidad" 
+                  :disabled="cantidad <= 1"
+                  class="px-3 py-2 bg-primary/10 text-primary hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+                >
+                  <i class="pi pi-minus text-sm"></i>
+                </button>
+                <input 
+                  type="number" 
+                  v-model.number="cantidad" 
+                  min="1" 
+                  :max="stockDisponible.length ? stockDisponible[0].stock : 99" 
+                  class="w-16 px-3 py-2 text-center text-black border-none focus:outline-none bg-primary/10" 
+                  readonly
+                />
+                <button 
+                  @click="incrementarCantidad" 
+                  :disabled="cantidad >= (stockDisponible.length ? stockDisponible[0].stock : 99)"
+                  class="px-3 py-2 bg-primary/10 text-primary hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+                >
+                  <i class="pi pi-plus text-sm"></i>
+                </button>
+              </div>
               <button @click="agregarAlCarrito" class="px-4 py-2 rounded-full shadow-lg bg-primary text-white   hover:bg-success/80 hover:scale-105 transition-transform flex items-center gap-2">
                 <i class="pi pi-shopping-cart"></i> Agregar al carrito
               </button>
             </div>
           </div>
-          <hr class="my-4" />
-          <!-- Precios destacados -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="rounded-lg shadow p-4 bg-primary/10 flex flex-col items-center">
-              <span class="text-sm text-primary font-semibold">{{ labels.precio1 }}</span>
-              <span class="text-2xl font-bold text-primary">{{ formatPrecio(articulo.precio1) }}</span>
-            </div>
-            <div class="rounded-lg shadow p-4 bg-success/10 flex flex-col items-center">
-              <span class="text-sm text-success font-semibold">{{ labels.precio2 }}</span>
-              <span class="text-2xl font-bold text-success">{{ formatPrecio(articulo.precio2) }}</span>
-            </div>
-            <div class="rounded-lg shadow p-4 bg-accent/10 flex flex-col items-center">
-              <span class="text-sm text-accent font-semibold">{{ labels.precio3 }}</span>
-              <span class="text-2xl font-bold text-accent">{{ formatPrecio(articulo.precio3) }}</span>
-            </div>
+        </div>
+      </div>
+      
+      <!-- Separador visual -->
+      <hr class="border-t-2 border-primary/20 my-6" />
+      
+      <!-- Sección de precios al final de la tarjeta -->
+      <div class="mt-8">
+        <h3 class="text-2xl font-bold text-primary mb-6 text-center">
+          <i class="pi pi-dollar mr-2"></i>Precios Disponibles
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div 
+            @click="seleccionarPrecio('precio1')"
+            :class="[
+              'rounded-xl shadow-lg p-6 border-l-4 flex flex-col items-center transform hover:scale-105 transition-all duration-300 cursor-pointer',
+              precioSeleccionado === 'precio1' 
+                ? 'bg-gradient-to-br from-success/20 to-success/30 border-success ring-2 ring-success/50' 
+                : 'bg-gradient-to-br from-primary/5 to-primary/15 border-primary hover:from-primary/10 hover:to-primary/20'
+            ]"
+          >
+            <span class="text-sm font-semibold mb-2 uppercase tracking-wide" :class="precioSeleccionado === 'precio1' ? 'text-success' : 'text-primary'">{{ labels.precio1 }}</span>
+            <span class="text-3xl font-bold" :class="precioSeleccionado === 'precio1' ? 'text-success' : 'text-primary'">{{ formatPrecio(articulo.precio1) }}</span>
+          </div>
+          <div 
+            @click="seleccionarPrecio('precio2')"
+            :class="[
+              'rounded-xl shadow-lg p-6 border-l-4 flex flex-col items-center transform hover:scale-105 transition-all duration-300 cursor-pointer',
+              precioSeleccionado === 'precio2' 
+                ? 'bg-gradient-to-br from-success/20 to-success/30 border-success ring-2 ring-success/50' 
+                : 'bg-gradient-to-br from-primary/5 to-primary/15 border-primary hover:from-primary/10 hover:to-primary/20'
+            ]"
+          >
+            <span class="text-sm font-semibold mb-2 uppercase tracking-wide" :class="precioSeleccionado === 'precio2' ? 'text-success' : 'text-primary'">{{ labels.precio2 }}</span>
+            <span class="text-3xl font-bold" :class="precioSeleccionado === 'precio2' ? 'text-success' : 'text-primary'">{{ formatPrecio(articulo.precio2) }}</span>
+          </div>
+          <div 
+            @click="seleccionarPrecio('precio3')"
+            :class="[
+              'rounded-xl shadow-lg p-6 border-l-4 flex flex-col items-center transform hover:scale-105 transition-all duration-300 cursor-pointer',
+              precioSeleccionado === 'precio3' 
+                ? 'bg-gradient-to-br from-success/20 to-success/30 border-success ring-2 ring-success/50' 
+                : 'bg-gradient-to-br from-primary/5 to-primary/15 border-primary hover:from-primary/10 hover:to-primary/20'
+            ]"
+          >
+            <span class="text-sm font-semibold mb-2 uppercase tracking-wide" :class="precioSeleccionado === 'precio3' ? 'text-success' : 'text-primary'">{{ labels.precio3 }}</span>
+            <span class="text-3xl font-bold" :class="precioSeleccionado === 'precio3' ? 'text-success' : 'text-primary'">{{ formatPrecio(articulo.precio3) }}</span>
           </div>
         </div>
       </div>
