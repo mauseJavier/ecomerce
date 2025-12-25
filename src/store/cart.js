@@ -26,14 +26,14 @@ export const useCartStore = defineStore('cart', {
     }
   },
   getters: {
-    total: (state) => state.items.reduce((sum, i) => sum + i.producto.precio1 * i.cantidad, 0),
+    total: (state) => state.items.reduce((sum, i) => sum + (i.producto.precio || i.producto.precio1) * i.cantidad, 0),
     cartForApi: (state) => state.items.map(i => ({
       codigo: i.producto.codigo,
       detalle: i.producto.detalle,
       porcentaje: i.producto.porcentaje,
       precioLista: i.producto.precio1,
       descuento: 0,
-      precio: i.producto.precio1,
+      precio: i.producto.precio || i.producto.precio1,
       iva: i.producto.iva,
       cantidad: i.cantidad,
       rubro: i.producto.rubro,
