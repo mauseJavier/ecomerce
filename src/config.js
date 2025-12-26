@@ -13,6 +13,10 @@ export default {
   guardarPresupuesto: import.meta.env.VITE_GUARDAR_PRESUPUESTO || false, // true o false
   entorno: import.meta.env.VITE_MODE, // 'desarrollo' o 'produccion'
   rubrosUrl: import.meta.env.VITE_API_RUBROS_URL,
+  whatsapp: {
+    telefono: import.meta.env.VITE_WHATSAPP_TELEFONO || '5491112345678', // Número con código de país
+    mensaje: import.meta.env.VITE_WHATSAPP_MENSAJE || 'Hola! Me interesa conocer más sobre sus productos.'
+  },
   precioLabels: {
     precio1: import.meta.env.VITE_PRECIO1_LABEL || 'Precio de lista',
     precio2: import.meta.env.VITE_PRECIO2_LABEL || 'Promoción',
