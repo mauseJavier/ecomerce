@@ -1,0 +1,15 @@
+services:
+  tienda-indumentaria-sami:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tienda-indumentaria-sami
+    # ports:
+    #   - "5174:80"
+    restart: unless-stopped
+    networks:
+      - redPrincipal
+
+networks:
+  redPrincipal:
+    external: true
